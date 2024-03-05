@@ -29,6 +29,15 @@ child_mortality_long <- child_mortality_data |>
 gdp_data_long <- gdp_data |>
   select(country, `1950`:`2025`) |>
   pivot_longer(cols = `1950`:`2025`, names_to = "Year", values_to = "GDP") |>
-  filter(!is.na(GDP))
-  
+  filter(!is.na(GDP)) |>
+  mutate(GDP = if_else(str_detect(GDP, "k"), as.numeric(str_replace(GDP, "k", "")) * 1000, as.numeric(GDP)))
 ```
+
+```{r}
+Total_data <- child_mortality_long |>
+  inner_join(gdp_data_long, join_by("country", "Year"))
+```
+
+
+
+
