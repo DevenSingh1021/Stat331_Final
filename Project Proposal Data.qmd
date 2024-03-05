@@ -1,5 +1,6 @@
 ---
 title: "Project_Proposal"
+author: Aaron Boone
 format: html
 editor: visual
 ---
