@@ -13,7 +13,9 @@ library(here)
 ```
 
 ```{r}
-1 + 1
+gdp_data <- read_csv(here::here("gdp_pcap.csv"))
+child_mortality_data <- read_csv(here::here("child_mortality_0_5_year_olds_dying_per_1000_born.csv"))
+
 ```
 
 ```{r}
