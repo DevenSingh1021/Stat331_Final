@@ -19,6 +19,6 @@ child_mortality_data <- read_csv(here::here("child_mortality_0_5_year_olds_dying
 ```
 
 ```{r}
-child_mortality_data |>
+child_mortality_long <- child_mortality_data |>
   pivot_longer(cols = `1800`:`2100`, names_to = "Year")
 ```
