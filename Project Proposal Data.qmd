@@ -1,0 +1,16 @@
+---
+title: "Project_Proposal"
+format: html
+editor: visual
+---
+
+## Project Proposal Data
+
+```{r}
+1 + 1
+```
+
+```{r}
+#| echo: false
+2 * 2
+```
