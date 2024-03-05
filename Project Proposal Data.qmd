@@ -36,6 +36,9 @@ gdp_data_long <- gdp_data |>
 ```{r}
 Total_data <- child_mortality_long |>
   inner_join(gdp_data_long, join_by("country", "Year"))
+
+Total_data |>
+  rename("Country" = country)
 ```
 
 
