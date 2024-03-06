@@ -12,6 +12,12 @@ library(tidyverse)
 library(here)
 ```
 
+## Data Set Descriptions
+
+For our first data set we chose one that focuses on the GDP ( Gross Domestic Product) per capita of almost 200 countries across the world. GDP per capita takes the whole economic output of a country, and divides it by the country's population to understand the economic output per person in a country. Lower GDPs per capita means the economy of the given country is poor. The data we have chose highlights the change in GDP per capita from 1950 to 2025 throughout the given countries.
+
+Our second data is centered around Child Mortality rates in countries across the world. The rate of child mortality is measured as the amount of deaths to children 5 years or younger for every 1,000 children born in a country. This data set includes almost 200 countries from around the world and gives us their child mortality rates from 1950 - 2025.
+
 ```{r}
 gdp_data <- read_csv(here::here("gdp_pcap.csv"))
 child_mortality_data <- read_csv(here::here("child_mortality_0_5_year_olds_dying_per_1000_born.csv"))
@@ -33,14 +39,14 @@ gdp_data_long <- gdp_data |>
   mutate(GDP = if_else(str_detect(GDP, "k"), as.numeric(str_replace(GDP, "k", "")) * 1000, as.numeric(GDP)))
 ```
 
+## Hypothesis
+
+We are combining our two data sets, GDP per capita and Child Mortality Rates, to examine what type of relationship, if any, there is between the two variables. We are testing how both GDP per capita and Child Mortality Rates have changed in countries across the world from 1950 to 2025, and if we can find any association between the two. Our hypothesis is that a lower GDP per Capita will be positively associated with a higher Child Mortality Rate. We believe this to be true because the lower economic standing a country has, the harsher living conditions there tends to be meaning an increased possibility of child mortality.
+
 ```{r}
 Total_data <- child_mortality_long |>
   inner_join(gdp_data_long, join_by("country", "Year"))
 
-Total_data |>
+Total_data <- Total_data |>
   rename("Country" = country)
 ```
-
-
-
-
