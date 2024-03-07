@@ -45,8 +45,6 @@ We are combining our two data sets, GDP per capita and Child Mortality Rates, to
 
 ```{r}
 Total_data <- child_mortality_long |>
-  inner_join(gdp_data_long, join_by("country", "Year"))
-
-Total_data <- Total_data |>
+  inner_join(gdp_data_long, join_by("country", "Year")) |>
   rename("Country" = country)
 ```
