@@ -50,3 +50,76 @@ Total_data <- child_mortality_long |>
   inner_join(gdp_data_long, join_by("country", "Year")) |>
   rename("Country" = country)
 ```
+
+## 2 Linear Regression
+
+```{r}
+avg_Total_data <- Total_data|>
+  group_by(Country)|>
+  summarize(avg_GDP = mean(GDP), avg_Death_per_1000 = mean(Death_per_1000))
+```
+
+## 2.1 Data Visualization
+
+```{r}
+ggplot(Total_data, aes(x = GDP, y = Death_per_1000, color = Country)) +
+  geom_line() +
+  labs(x = "GDP", y = "Death_per_1000", title = "Relationship between Death_per_1000 and GDP over time")
+
+ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
+  geom_point() +
+  labs(x = "Average GDP", y = "Average Death_per_1000", title = "Relationship between Average Death_per_1000 and Average GDP over time")
+```
+
+## 2.2 Linear Regression
+
+```{r}
+linear_regression_model <- lm(avg_Death_per_1000 ~ avg_GDP, data = avg_Total_data)
+summary(linear_regression_model)
+            
+```
+
+## 2.3 Model Fit
+
+```{r}
+variance_response <- var(avg_Total_data$avg_Death_per_1000)
+variance_fitted <- var(fitted(linear_regression_model))
+variance_residuals <- var(residuals(linear_regression_model))
+
+formatted_table <- data.frame(Variance = c(variance_response, variance_fitted, variance_residuals), 
+                              Source = c("Response Values", "Fitted Values", "Residuals"))
+
+print(formatted_table)
+```
+
+## 3 Simulation
+
+## 3.1 Visualizing Simulations from the Model
+
+```{r}
+predictions <- predict(linear_regression_model, avg_Total_data)
+simulated_values <- predictions + rnorm(length(predictions), 0, sigma(linear_regression_model))
+
+simulated_formatted_table <- data.frame(avg_GDP = avg_Total_data$avg_GDP, avg_Death_per_1000 = simulated_values)
+
+ggplot() +
+  geom_point(data = avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000), color = "red", alpha = 0.5) + 
+  geom_point(data = simulated_formatted_table, aes(x = avg_GDP, y = avg_Death_per_1000), color = "blue", alpha = 0.5) +
+  labs(x= "Average GDP", y = "Average Death_per_1000", title = "Comparison of Observed and Simulated Data")
+```
+
+## 3.2 Generating Multiple Predictive Checks
+
+```{r}
+num_simulations <- 1000
+r_squared_values <- numeric(num_simulations)
+
+for (i in 1:num_simulations) {
+  simulated_values <- predictions + rnorm(length(predictions), 0, sigma(linear_regression_model))
+  simulated_formatted_table <- data.frame(avg_GDP = avg_Total_data$avg_GDP, avg_Death_per_1000 = simulated_values)
+  simulated_linear_regression_model <- lm(simulated_formatted_table[,1] ~ simulated_formatted_table[,2], data = formatted_table)
+  r_squared_values[i] <- summary(simulated_linear_regression_model)$r.squared
+}
+
+hist(r_squared_values, breaks = 20, col = "blue", xlab = "R-squared", main = "R-squared Distribution")
+```
