@@ -198,7 +198,7 @@ Caused by warning in `if_else()`:
 </section>
 <section id="linear-regression-1" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression-1">2.2 Linear Regression</h2>
-<p><span class="math inline">\(\hat{y} = 123 - .0024\hat{x}\)</span>, where \<span class="math inline">\(\hat{y} = \text{Predicted Average Child Mortality Rate}\)</span> and <span class="math inline">\(\hat{x} = \text{Average GDP}\)</span></p>
+<p><span class="math inline">\(\hat{y} = 123 - .0024\hat{x}, \text{where }\\ \hat{y} = \text{Predicted Average Child Mortality Rate} \text{ and } \hat{x} = \text{Predicted Average GDP}\)</span></p>
 <p>From this equation we can gather that when the Average GDP of a country is $0, the predicted Average Child Mortality Rate is 123 deaths per 1000 children. We can also see that with every one dollar increase in Average GDP, the predicted Average Child Mortality rate goes down by .0024 deaths per 1000 children.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>linear_regression_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(avg_Death_per_1000 <span class="sc">~</span> avg_GDP, <span class="at">data =</span> avg_Total_data)</span>
