@@ -1,8 +1,9 @@
 ---
-title: "Written Report"
+title: "Project Proposal"
 author: Aaron Boone, Deven Singh, Miguel Serrano, Daniel Magelky
 format: html
 editor: visual
+embed-resources: true
 ---
 
 ## Project Proposal Data
