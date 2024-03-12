@@ -117,6 +117,7 @@ ggplot() +
 ## 3.2 Generating Multiple Predictive Checks
 
 ```{r}
+set.seed(9531)
 num_simulations <- 1000
 r_squared_values <- numeric(num_simulations)
 
@@ -127,5 +128,15 @@ for (i in 1:num_simulations) {
   r_squared_values[i] <- summary(simulated_linear_regression_model)$r.squared
 }
 
-hist(r_squared_values, breaks = 20, col = "blue", xlab = "R-squared", main = "R-squared Distribution")
+hist(r_squared_values, breaks = 20, col = "blue", xlab = "R-squared", ylab = NULL, main = "R-squared Distribution")
+
+ggplot(mapping = aes(x = r_squared_values,
+                     fill = "blue")
+       ) +
+  geom_histogram(binwidth = .02) +
+  labs(x = "R-Squared",
+       y = NULL,
+       subtitle = "Frequency",
+       title = "R-Squared Distribution"
+       )
 ```
