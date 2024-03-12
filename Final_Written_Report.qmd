@@ -89,6 +89,8 @@ summary(linear_regression_model)
 
 ## 2.3 Model Fit
 
+From the linear regression model above, we can estimate that about 33.53% of the variability in the response values are explained by the regression model. This suggest we have a weak to moderate model for explaining the variability.
+
 ```{r}
 variance_response <- var(avg_Total_data$avg_Death_per_1000)
 variance_fitted <- var(fitted(linear_regression_model))
