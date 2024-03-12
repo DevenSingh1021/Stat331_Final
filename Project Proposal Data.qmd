@@ -8,6 +8,7 @@ editor: visual
 ## Project Proposal Data
 
 ```{r}
+#| message: false
 library(tidyverse)
 library(here)
 ```
@@ -21,12 +22,15 @@ For our first data set we chose one that focuses on the GDP ( Gross Domestic Pro
 Our second data is centered around Child Mortality rates in countries across the world. The rate of child mortality is measured as the amount of deaths to children 5 years or younger for every 1,000 children born in a country. This data set includes almost 200 countries from around the world and gives us their child mortality rates from 1950 - 2025.
 
 ```{r}
+#| code-fold: true
+
 gdp_data <- read_csv(here::here("gdp_pcap.csv"))
 child_mortality_data <- read_csv(here::here("child_mortality_0_5_year_olds_dying_per_1000_born.csv"))
 
 ```
 
 ```{r}
+#| code-fold: true
 child_mortality_long <- child_mortality_data |>
   select(country, `1950`:`2025`) |>
   pivot_longer(cols = `1950`:`2025`, names_to = "Year", values_to = "Death_per_1000") |>
@@ -34,6 +38,8 @@ child_mortality_long <- child_mortality_data |>
 ```
 
 ```{r}
+#| code-fold: true
+
 gdp_data_long <- gdp_data |>
   select(country, `1950`:`2025`) |>
   pivot_longer(cols = `1950`:`2025`, names_to = "Year", values_to = "GDP") |>
@@ -46,6 +52,8 @@ gdp_data_long <- gdp_data |>
 We are combining our two data sets, GDP per capita and Child Mortality Rates, to examine what type of relationship, if any, there is between the two variables. We are testing how GDP per capita has affected Child Mortality Rates in countries across the world from 1950 to 2025, and if we can find any association between the two. Our hypothesis is that a lower GDP per Capita will be positively associated with a higher Child Mortality Rate. We believe this to be true because the lower economic standing a country has, the harsher living conditions there tends to be meaning an increased possibility of child mortality.
 
 ```{r}
+#| code-fold: true
+
 Total_data <- child_mortality_long |>
   inner_join(gdp_data_long, join_by("country", "Year")) |>
   rename("Country" = country)
@@ -54,6 +62,8 @@ Total_data <- child_mortality_long |>
 ## 2 Linear Regression
 
 ```{r}
+#| code-fold: true
+
 avg_Total_data <- Total_data|>
   group_by(Country)|>
   summarize(avg_GDP = mean(GDP), avg_Death_per_1000 = mean(Death_per_1000))
@@ -62,6 +72,8 @@ avg_Total_data <- Total_data|>
 ## 2.1 Data Visualization
 
 ```{r}
+#| code-fold: true
+
 ggplot(Total_data, aes(x = GDP, y = Death_per_1000, color = Country)) +
   geom_line() +
   labs(x = "GDP", y = "Death_per_1000", title = "Relationship between Death_per_1000 and GDP over time")
@@ -74,6 +86,8 @@ ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
 ## 2.2 Linear Regression
 
 ```{r}
+#| code-fold: true
+
 linear_regression_model <- lm(avg_Death_per_1000 ~ avg_GDP, data = avg_Total_data)
 summary(linear_regression_model)
             
@@ -82,6 +96,8 @@ summary(linear_regression_model)
 ## 2.3 Model Fit
 
 ```{r}
+#| code-fold: true
+
 variance_response <- var(avg_Total_data$avg_Death_per_1000)
 variance_fitted <- var(fitted(linear_regression_model))
 variance_residuals <- var(residuals(linear_regression_model))
@@ -97,6 +113,8 @@ print(formatted_table)
 ## 3.1 Visualizing Simulations from the Model
 
 ```{r}
+#| code-fold: true
+
 predictions <- predict(linear_regression_model, avg_Total_data)
 simulated_values <- predictions + rnorm(length(predictions), 0, sigma(linear_regression_model))
 
@@ -111,6 +129,8 @@ ggplot() +
 ## 3.2 Generating Multiple Predictive Checks
 
 ```{r}
+#| code-fold: true
+
 num_simulations <- 1000
 r_squared_values <- numeric(num_simulations)
 
