@@ -13,6 +13,7 @@ editor: visual
 #| message: false
 library(tidyverse)
 library(here)
+library(gganimate)
 ```
 
 ## Data Set Descriptions
@@ -66,9 +67,19 @@ avg_Total_data <- Total_data|>
 ## 2.1 Data Visualization
 
 ```{r}
-ggplot(Total_data, aes(x = GDP, y = Death_per_1000, color = Country)) +
-  geom_line() +
-  labs(x = "GDP", y = NULL, subtitle = "Child Mortality per 1000", title = "Relationship between Child Mortality and GDP over time")
+bubble <- ggplot(Total_data, aes(x = GDP, y = Death_per_1000, size = GDP)) +
+  geom_point() +
+  theme_bw() +
+  labs(title = 'Year: 1950-2025', x = 'GDP', y = 'Child Mortality') +
+  transition_time(as.numeric(Year)) +
+  ease_aes('linear') 
+  gganimate::transition_states(
+  Year, 
+  transition_length = 1, 
+  state_length = 1
+) 
+
+animate(bubble, renderer = gifski_renderer())
 
 ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
   geom_point() +
