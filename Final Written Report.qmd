@@ -1,0 +1,139 @@
+---
+title: "Project_Proposal"
+author: Aaron Boone, Deven Singh, Miguel Serrano, Daniel Magelky
+format: html
+editor: visual
+---
+
+## Project Proposal Data
+
+```{r}
+#| message: false
+library(tidyverse)
+library(here)
+```
+
+## Data Set Descriptions
+
+Both of our data sets have been sourced from the GapMinder website.
+
+For our first data set we chose one that focuses on the GDP ( Gross Domestic Product) per capita of almost 200 countries across the world. GDP per capita takes the whole economic output of a country, and divides it by the country's population to understand the economic output per person in a country. Lower GDPs per capita means the economy of the given country is poor. The data we have chose highlights the change in GDP per capita from 1950 to 2025 throughout the given countries.
+
+Our second data is centered around Child Mortality rates in countries across the world. The rate of child mortality is measured as the amount of deaths to children 5 years or younger for every 1,000 children born in a country. This data set includes almost 200 countries from around the world and gives us their child mortality rates from 1950 - 2025.
+
+```{r}
+gdp_data <- read_csv(here::here("gdp_pcap.csv"))
+child_mortality_data <- read_csv(here::here("child_mortality_0_5_year_olds_dying_per_1000_born.csv"))
+
+```
+
+```{r}
+child_mortality_long <- child_mortality_data |>
+  select(country, `1950`:`2025`) |>
+  pivot_longer(cols = `1950`:`2025`, names_to = "Year", values_to = "Death_per_1000") |>
+  filter(!is.na(Death_per_1000)) 
+```
+
+```{r}
+gdp_data_long <- gdp_data |>
+  select(country, `1950`:`2025`) |>
+  pivot_longer(cols = `1950`:`2025`, names_to = "Year", values_to = "GDP") |>
+  filter(!is.na(GDP)) |>
+  mutate(GDP = if_else(str_detect(GDP, "k"), as.numeric(str_replace(GDP, "k", "")) * 1000, as.numeric(GDP)))
+```
+
+## Hypothesis
+
+We are combining our two data sets, GDP per capita and Child Mortality Rates, to examine what type of relationship, if any, there is between the two variables. We are testing how GDP per capita has affected Child Mortality Rates in countries across the world from 1950 to 2025, and if we can find any association between the two. Our hypothesis is that a lower GDP per Capita will be positively associated with a higher Child Mortality Rate. We believe this to be true because the lower economic standing a country has, the harsher living conditions there tends to be meaning an increased possibility of child mortality.
+
+```{r}
+Total_data <- child_mortality_long |>
+  inner_join(gdp_data_long, join_by("country", "Year")) |>
+  rename("Country" = country)
+```
+
+## 2 Linear Regression
+
+```{r}
+#| code-fold: true
+avg_Total_data <- Total_data|>
+  group_by(Country)|>
+  summarize(avg_GDP = mean(GDP), avg_Death_per_1000 = mean(Death_per_1000))
+```
+
+## 2.1 Data Visualization
+
+```{r}
+ggplot(Total_data, aes(x = GDP, y = Death_per_1000, color = Country)) +
+  geom_line() +
+  labs(x = "GDP", y = NULL, subtitle = "Child Mortality per 1000", title = "Relationship between Child Mortality and GDP over time")
+
+ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
+  geom_point() +
+  labs(x = "Average GDP", y = NULL, subtitle = "Average Child Mortality per 1000", title = "Relationship between Average Child Mortality and Average GDP over time")
+```
+
+## 2.2 Linear Regression
+
+$\hat{y} = 123 - .0024\hat{x}, \text{where}\\ \hat{y} = \text{Predicted Average Child Mortality Rate} \text{ and } \hat{x} = \text{Predicted Average GDP}$
+
+From this equation we can gather that when the Average GDP of a country is $0, the predicted Average Child Mortality Rate is 123 deaths per 1000 children. We can also see that with every one dollar increase in Average GDP, the predicted Average Child Mortality rate goes down by .0024 deaths per 1000 children.
+
+```{r}
+linear_regression_model <- lm(avg_Death_per_1000 ~ avg_GDP, data = avg_Total_data)
+summary(linear_regression_model)
+            
+```
+
+## 2.3 Model Fit
+
+```{r}
+variance_response <- var(avg_Total_data$avg_Death_per_1000)
+variance_fitted <- var(fitted(linear_regression_model))
+variance_residuals <- var(residuals(linear_regression_model))
+
+formatted_table <- data.frame(Variance = c(variance_response, variance_fitted, variance_residuals), 
+                              Source = c("Response Values", "Fitted Values", "Residuals"))
+
+print(formatted_table)
+```
+
+## 3 Simulation
+
+## 3.1 Visualizing Simulations from the Model
+
+```{r}
+predictions <- predict(linear_regression_model, avg_Total_data)
+simulated_values <- predictions + rnorm(length(predictions), 0, sigma(linear_regression_model))
+
+simulated_formatted_table <- data.frame(avg_GDP = avg_Total_data$avg_GDP, avg_Death_per_1000 = simulated_values)
+
+ggplot() +
+  geom_point(data = avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000), color = "red", alpha = 0.5) + 
+  geom_point(data = simulated_formatted_table, aes(x = avg_GDP, y = avg_Death_per_1000), color = "blue", alpha = 0.5) +
+  labs(x= "Average GDP", y = NULL, subtitle ="Average Child Mortality per 1000", title = "Comparison of Observed and Simulated Data")
+```
+
+## 3.2 Generating Multiple Predictive Checks
+
+```{r}
+set.seed(9531)
+num_simulations <- 1000
+r_squared_values <- numeric(num_simulations)
+
+for (i in 1:num_simulations) {
+  simulated_values <- predictions + rnorm(length(predictions), 0, sigma(linear_regression_model))
+  simulated_formatted_table <- data.frame(avg_GDP = avg_Total_data$avg_GDP, avg_Death_per_1000 = simulated_values)
+  simulated_linear_regression_model <- lm(simulated_formatted_table[,1] ~ simulated_formatted_table[,2], data = formatted_table)
+  r_squared_values[i] <- summary(simulated_linear_regression_model)$r.squared
+}
+
+ggplot(mapping = aes(x = r_squared_values)
+       ) +
+  geom_histogram(binwidth = .02, color = "black", fill = "blue") +
+  labs(x = "R-Squared",
+       y = NULL,
+       subtitle = "Frequency",
+       title = "R-Squared Distribution"
+       ) 
+```
