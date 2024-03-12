@@ -87,6 +87,8 @@ summary(linear_regression_model)
 
 ## 2.3 Model Fit
 
+our R2 value is 33.53%.
+
 ```{r}
 variance_response <- var(avg_Total_data$avg_Death_per_1000)
 variance_fitted <- var(fitted(linear_regression_model))
