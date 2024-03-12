@@ -55,6 +55,7 @@ Total_data <- child_mortality_long |>
 ## 2 Linear Regression
 
 ```{r}
+#| code-fold: true
 avg_Total_data <- Total_data|>
   group_by(Country)|>
   summarize(avg_GDP = mean(GDP), avg_Death_per_1000 = mean(Death_per_1000))
@@ -65,11 +66,11 @@ avg_Total_data <- Total_data|>
 ```{r}
 ggplot(Total_data, aes(x = GDP, y = Death_per_1000, color = Country)) +
   geom_line() +
-  labs(x = "GDP", y = "Death_per_1000", title = "Relationship between Death_per_1000 and GDP over time")
+  labs(x = "GDP", y = NULL, subtitle = "Child Mortality per 1000", title = "Relationship between Child Mortality and GDP over time")
 
 ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
   geom_point() +
-  labs(x = "Average GDP", y = "Average Death_per_1000", title = "Relationship between Average Death_per_1000 and Average GDP over time")
+  labs(x = "Average GDP", y = NULL, subtitle = "Average Child Mortality per 1000", title = "Relationship between Average Child Mortality and Average GDP over time")
 ```
 
 ## 2.2 Linear Regression
@@ -110,7 +111,7 @@ simulated_formatted_table <- data.frame(avg_GDP = avg_Total_data$avg_GDP, avg_De
 ggplot() +
   geom_point(data = avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000), color = "red", alpha = 0.5) + 
   geom_point(data = simulated_formatted_table, aes(x = avg_GDP, y = avg_Death_per_1000), color = "blue", alpha = 0.5) +
-  labs(x= "Average GDP", y = "Average Death_per_1000", title = "Comparison of Observed and Simulated Data")
+  labs(x= "Average GDP", y = NULL, subtitle ="Average Child Mortality per 1000", title = "Comparison of Observed and Simulated Data")
 ```
 
 ## 3.2 Generating Multiple Predictive Checks
