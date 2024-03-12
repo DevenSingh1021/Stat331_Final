@@ -8,6 +8,7 @@ editor: visual
 ## Project Proposal Data
 
 ```{r}
+#| message: false
 library(tidyverse)
 library(here)
 ```
