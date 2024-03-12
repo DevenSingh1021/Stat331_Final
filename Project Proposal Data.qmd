@@ -8,7 +8,6 @@ editor: visual
 ## Project Proposal Data
 
 ```{r}
-#| echo: false
 #| code-fold: true
 library(tidyverse)
 library(here)
