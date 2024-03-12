@@ -58,16 +58,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="Project Proposal Data_files/libs/clipboard/clipboard.min.js"></script>
-<script src="Project Proposal Data_files/libs/quarto-html/quarto.js"></script>
-<script src="Project Proposal Data_files/libs/quarto-html/popper.min.js"></script>
-<script src="Project Proposal Data_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="Project Proposal Data_files/libs/quarto-html/anchor.min.js"></script>
-<link href="Project Proposal Data_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="Project Proposal Data_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="Project Proposal Data_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="Project Proposal Data_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="Project Proposal Data_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Final Written Report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Final Written Report_files/libs/quarto-html/quarto.js"></script>
+<script src="Final Written Report_files/libs/quarto-html/popper.min.js"></script>
+<script src="Final Written Report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Final Written Report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Final Written Report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Final Written Report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Final Written Report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Final Written Report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Final Written Report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -186,13 +186,13 @@ Caused by warning in `if_else()`:
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"GDP"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">subtitle =</span> <span class="st">"Child Mortality per 1000"</span>, <span class="at">title =</span> <span class="st">"Relationship between Child Mortality and GDP over time"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Project-Proposal-Data_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="Final-Written-Report_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(avg_Total_data, <span class="fu">aes</span>(<span class="at">x =</span> avg_GDP, <span class="at">y =</span> avg_Death_per_1000)) <span class="sc">+</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Average GDP"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">subtitle =</span> <span class="st">"Average Child Mortality per 1000"</span>, <span class="at">title =</span> <span class="st">"Relationship between Average Child Mortality and Average GDP over time"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Project-Proposal-Data_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
+<p><img src="Final-Written-Report_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -260,7 +260,7 @@ F-statistic: 97.34 on 1 and 193 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> simulated_formatted_table, <span class="fu">aes</span>(<span class="at">x =</span> avg_GDP, <span class="at">y =</span> avg_Death_per_1000), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span> <span class="st">"Average GDP"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">subtitle =</span><span class="st">"Average Child Mortality per 1000"</span>, <span class="at">title =</span> <span class="st">"Comparison of Observed and Simulated Data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Project-Proposal-Data_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="Final-Written-Report_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -287,7 +287,7 @@ F-statistic: 97.34 on 1 and 193 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"R-Squared Distribution"</span></span>
 <span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>       ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Project-Proposal-Data_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<p><img src="Final-Written-Report_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
