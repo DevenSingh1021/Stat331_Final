@@ -68,7 +68,7 @@ avg_Total_data <- Total_data|>
 
 ## 2.1 Data Visualization
 
-From the animate plots we are able to see the relationship between Time and both GDP and Child Mortality. We can see within the graphs that as the year approaches 2025 Child Mortality decreases and GDP increases. This causes it to move slightly diagonally indicating there may be a relationship between Child Mortality and GDP over time.
+From the animate plots we are able to see the relationship between Time and both GDP and Child Mortality. Throughout the 75 year period we chose, 1950 to 2025, we can see generally that GDP has increased exponentially over time and Child Mortality has decreased significantly. We can see there is an inverse association between the two variables as when GDP goes up, Child Mortality goes down. Through the animation we can see dots moving in a diagonal direction indicating the possibility of a linear relationship between the two variables..
 
 ```{r}
 bubble <- ggplot(Total_data, aes(x = GDP, y = Death_per_1000, size = GDP)) +
