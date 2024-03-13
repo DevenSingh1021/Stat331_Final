@@ -57,6 +57,8 @@ Total_data <- child_mortality_long |>
 
 ## 2 Linear Regression
 
+The statistical method we're using for this is linear regression. Linear regression is a statistical method that predicts the linear relationship between a quantitative response variable and one or more quantitiative explanatory variables. Specifically in this report, we are using a simple linear regression model, which takes in one explanatory variable, that predicts the linear relationship between our explanatory variable, GDP, and the response variable, Child Mortality rates.
+
 ```{r}
 #| code-fold: true
 avg_Total_data <- Total_data|>
