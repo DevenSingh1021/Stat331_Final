@@ -102,7 +102,7 @@ summary(linear_regression_model)
 
 ## 2.3 Model Fit
 
-From the linear regression model above, we can estimate that about 33.53% of the variability in the response values are explained by the regression model. This suggest we have a weak to moderate model for explaining the variability.
+From the linear regression model above, we can estimate that about 33.53% of the variability in the response values are explained by the regression model. This suggests that we have a weak to moderate model for explaining the variability in the data. We can see that the fitted values, which represent the variability of Average Child Mortality rates accounted for by the Average GDP, makes up only 1441.605 of 4299.856 of the response values, which is about .3353, the same as the R-Square value. The residuals, 2858.251 out of the 4299.856 response values, is the rest of the unexplained variability in the data set that isn't represented in the model.
 
 ```{r}
 variance_response <- var(avg_Total_data$avg_Death_per_1000)
