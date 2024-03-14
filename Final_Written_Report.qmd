@@ -138,6 +138,8 @@ ggplot() +
 
 ## 3.2 Generating Multiple Predictive Checks
 
+After running 1000 simulations and calculating the R-Squared value for the regression between the observed data-set and the simulated data-set, we made a histogram that plots the frequency of these R-Squared values. The R-Squared value, in this context, represents the variability in the simulated average death per 100 persons variable that is accounted for by the linear model of the observed data set. The histogram appears to have a normal distribution, with a mean around 0.33 or 0.34 and ranging from 0.2 to about 0.48. Since the mean of the graph is very similar to the reported R-Squared from section 2.3, we could say that the simulation generates data appropriately and accurately.
+
 ```{r}
 set.seed(9531)
 num_simulations <- 1000
@@ -157,5 +159,5 @@ ggplot(mapping = aes(x = r_squared_values)
        y = NULL,
        subtitle = "Frequency",
        title = "R-Squared Distribution"
-       ) 
+       )
 ```
