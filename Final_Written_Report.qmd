@@ -87,7 +87,7 @@ animate(bubble, renderer = gifski_renderer())
 
 ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
   geom_point() +
-  labs(x = "Average GDP", y = NULL, subtitle = "Average Child Mortality per 1000", title = "Relationship between Average Child Mortality and Average GDP over time")
+  labs(x = "Average GDP", y = NULL, subtitle = "Average Child Mortality per 1000 Births", title = "Relationship between Average Child Mortality and Average GDP over time")
 ```
 
 ## 2.2 Linear Regression
