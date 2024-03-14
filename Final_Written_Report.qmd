@@ -77,7 +77,7 @@ From the animate plots we are able to see the relationship between Time and both
 bubble <- ggplot(Total_data, aes(x = GDP, y = Death_per_1000, size = GDP)) +
   geom_point() +
   theme_bw() +
-  labs(title = 'Year: 1950-2025', x = 'GDP', y = 'Child Mortality') +
+  labs(title = 'Year: 1950-2025', x = 'GDP', y = NULL, subtitle = "Child Mortality") +
   transition_time(as.numeric(Year)) +
   ease_aes('linear') 
   gganimate::transition_states(
@@ -95,7 +95,7 @@ ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
 
 ## 2.2 Linear Regression
 
-$$\hat{y} = 123 - .0024\hat{x}, \text{where}$$ $$\hat{y} = \text{Predicted Average Child Mortality Rate} \text{ and } \hat{x} = \text{Predicted Average GDP}$$
+$$\hat{y} = 123 - .0024x, \text{where}$$ $$\hat{y} = \text{Predicted Average Child Mortality Rate} \text{ and } x = \text{Average GDP}$$
 
 From this equation we can gather that when the Average GDP of a country is \$0, the predicted Average Child Mortality Rate is 123 deaths per 1000 children. We can also see that with every one dollar increase in Average GDP, the predicted Average Child Mortality rate goes down by .0024 deaths per 1000 children.
 
