@@ -4,13 +4,15 @@ author: Aaron Boone, Deven Singh, Miguel Serrano, Daniel Magelky
 format: 
   html:
     self-contained: true
+    code-fold: true 
 editor: visual
+execute:
+  messages: false
 ---
 
 ## Project Proposal Data
 
 ```{r}
-#| message: false
 library(tidyverse)
 library(here)
 library(gganimate)
@@ -57,16 +59,17 @@ Total_data <- child_mortality_long |>
 
 ## 2 Linear Regression
 
-The statistical method we're using for this is linear regression. Linear regression is a statistical method that predicts the linear relationship between a quantitative response variable and one or more quantitiative explanatory variables. Specifically in this report, we are using a simple linear regression model, which takes in one explanatory variable, that predicts the linear relationship between our explanatory variable, GDP, and the response variable, Child Mortality rates.
+The statistical method we're using for this is linear regression. Linear regression is a statistical method that predicts the linear relationship between a quantitative response variable and one or more quantitative explanatory variables. In this report, we are using a simple linear regression model which takes in one explanatory variable, that predicts the linear relationship between our explanatory variable, GDP, and the response variable, Child Mortality rates.
 
 ```{r}
-#| code-fold: true
 avg_Total_data <- Total_data|>
   group_by(Country)|>
   summarize(avg_GDP = mean(GDP), avg_Death_per_1000 = mean(Death_per_1000))
 ```
 
 ## 2.1 Data Visualization
+
+From the animate plots we are able to see the relationship between Time and both GDP and Child Mortality. Throughout the 75 year period we chose, 1950 to 2025, we can see generally that GDP has increased exponentially over time and Child Mortality has decreased significantly. We can see there is an inverse association between the two variables as when GDP goes up, Child Mortality goes down. Through the animation we can see dots moving in a diagonal direction indicating the possibility of a linear relationship between the two variables.
 
 ```{r}
 bubble <- ggplot(Total_data, aes(x = GDP, y = Death_per_1000, size = GDP)) +
@@ -85,7 +88,7 @@ animate(bubble, renderer = gifski_renderer())
 
 ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
   geom_point() +
-  labs(x = "Average GDP", y = NULL, subtitle = "Average Child Mortality per 1000", title = "Relationship between Average Child Mortality and Average GDP over time")
+  labs(x = "Average GDP", y = NULL, subtitle = "Average Child Mortality per 1000 Births", title = "Relationship between Average Child Mortality and Average GDP over time")
 ```
 
 ## 2.2 Linear Regression
