@@ -101,7 +101,7 @@ From this equation we can gather that when the Average GDP of a country is \$0, 
 
 ```{r}
 linear_regression_model <- lm(avg_Death_per_1000 ~ avg_GDP, data = avg_Total_data)
-summary(linear_regression_model)
+broom::tidy(linear_regression_model)
             
 ```
 
