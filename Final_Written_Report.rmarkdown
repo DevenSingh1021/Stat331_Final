@@ -11,13 +11,16 @@ execute:
   warning: false
 ---
 
+
 ## Project Proposal Data
+
 
 ```{r}
 library(tidyverse)
 library(here)
 library(gganimate)
 ```
+
 
 ## Data Set Descriptions
 
@@ -26,6 +29,7 @@ Both of our data sets have been sourced from the GapMinder website.
 For our first data set we chose one that focuses on the GDP ( Gross Domestic Product) per capita of almost 200 countries across the world. GDP per capita takes the whole economic output of a country, and divides it by the country's population to understand the economic output per person in a country. Lower GDPs per capita means the economy of the given country is poor. The data we have chose highlights the change in GDP per capita from 1950 to 2025 throughout the given countries.
 
 Our second data is centered around Child Mortality rates in countries across the world. The rate of child mortality is measured as the amount of deaths to children 5 years or younger for every 1,000 children born in a country. This data set includes almost 200 countries from around the world and gives us their child mortality rates from 1950 - 2025.
+
 
 ```{r}
 gdp_data <- read_csv(here::here("gdp_pcap.csv"))
@@ -48,9 +52,11 @@ gdp_data_long <- gdp_data |>
   mutate(GDP = if_else(str_detect(GDP, "k"), as.numeric(str_replace(GDP, "k", "")) * 1000, as.numeric(GDP)))
 ```
 
+
 ## Hypothesis
 
 We are combining our two data sets, GDP per capita and Child Mortality Rates, to examine what type of relationship, if any, there is between the two variables. We are testing how GDP per capita has affected Child Mortality Rates in countries across the world from 1950 to 2025, and if we can find any association between the two. Our hypothesis is that a lower GDP per Capita will be positively associated with a higher Child Mortality Rate. We believe this to be true because the lower economic standing a country has, the harsher living conditions there tends to be meaning an increased possibility of child mortality.
+
 
 ```{r}
 Total_data <- child_mortality_long |>
@@ -58,9 +64,11 @@ Total_data <- child_mortality_long |>
   rename("Country" = country)
 ```
 
+
 ## 2 Linear Regression
 
 The statistical method we're using for this is linear regression. Linear regression is a statistical method that predicts the linear relationship between a quantitative response variable and one or more quantitative explanatory variables. In this report, we are using a simple linear regression model which takes in one explanatory variable, that predicts the linear relationship between our explanatory variable, GDP, and the response variable, Child Mortality rates.
+
 
 ```{r}
 avg_Total_data <- Total_data|>
@@ -68,9 +76,11 @@ avg_Total_data <- Total_data|>
   summarize(avg_GDP = mean(GDP), avg_Death_per_1000 = mean(Death_per_1000))
 ```
 
+
 ## 2.1 Data Visualization
 
 From the animate plots we are able to see the relationship between Time and both GDP and Child Mortality. Throughout the 75 year period we chose, 1950 to 2025, we can see generally that GDP has increased exponentially over time and Child Mortality has decreased significantly. We can see there is an inverse association between the two variables as when GDP goes up, Child Mortality goes down. By looking at the animation, you can see that most countries have had decreases in their child mortality rates, but many countries haven't had a proportional increase in GDP. This indicates that the relationship might not be perfectly represented by a linear model. It appears that the relationship between GDP and child mortality might be exponential in nature. When countries have higher child mortality, there is more incentive for addressing that issue than growing economically. Once countries have the issue of child mortality under control, then you can see their GDP grow, as their focus shifts towards a new objective. This relationship can be seen in how many countries in the animation move almost vertically down before shifting to the right. For the most part, independence of the countries is a safe assumption, but there could be some relationships between very high GDP nations and low GDP nations. Countries like the United States often use other countries to produce some materials for goods as a way to capitalize off of less strict labor laws or closer proximity to a valuable resource. When this occurs, there could be some effect of larger nations on the GDP of smaller nations, that isn't explained solely by child mortality.
+
 
 ```{r}
 #| message: false
@@ -93,11 +103,13 @@ ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
   labs(x = "Average GDP", y = NULL, subtitle = "Average Child Mortality per 1000 Births", title = "Relationship between Average Child Mortality and Average GDP over time")
 ```
 
+
 ## 2.2 Linear Regression
 
 $$\hat{y} = 123 - .0024x, \text{where}$$ $$\hat{y} = \text{Predicted Average Child Mortality Rate} \text{ and } x = \text{Average GDP}$$
 
 From this equation we can gather that when the Average GDP of a country is \$0, the predicted Average Child Mortality Rate is 123 deaths per 1000 children. We can also see that with every one dollar increase in Average GDP, the predicted Average Child Mortality rate goes down by .0024 deaths per 1000 children.
+
 
 ```{r}
 linear_regression_model <- lm(avg_Death_per_1000 ~ avg_GDP, data = avg_Total_data)
@@ -105,9 +117,11 @@ broom::tidy(linear_regression_model)
             
 ```
 
+
 ## 2.3 Model Fit
 
 When running a linear regression, an R-Squared value is outputted. This value, given in a proportion or percentage, represents the amount of variability in the response variable which is accounted for in the linear regression model. From the linear regression model above, our R-Squared value is .3353 so we can estimate that about 33.53% of the variability in the response values are explained by the regression model. This suggests that we have a weak to moderate model for explaining the variability in the data. We can see that the fitted values, which represent the variability of Average Child Mortality rates accounted for by the Average GDP, makes up only 1441.605 of 4299.856 of the response values, which is about .3353, the same as the R-Square value. The residuals, 2858.251 out of the 4299.856 response values, is the rest of the unexplained variability in the data set that isn't represented in the model.
+
 
 ```{r}
 variance_response <- var(avg_Total_data$avg_Death_per_1000)
@@ -118,9 +132,11 @@ formatted_table <- data.frame(Variance = c(variance_response, variance_fitted, v
 print(formatted_table)
 ```
 
+
 ## 3 Simulation
 
 ## 3.1 Visualizing Simulations from the Model
+
 
 ```{r}
 predictions <- predict(linear_regression_model, avg_Total_data)
@@ -134,7 +150,9 @@ ggplot() +
   labs(x= "Average GDP", y = NULL, subtitle ="Average Child Mortality per 1000", title = "Comparison of Observed and Simulated Data")
 ```
 
+
 ## 3.2 Generating Multiple Predictive Checks
+
 
 ```{r}
 set.seed(9531)
@@ -157,3 +175,4 @@ ggplot(mapping = aes(x = r_squared_values)
        title = "R-Squared Distribution"
        ) 
 ```
+
