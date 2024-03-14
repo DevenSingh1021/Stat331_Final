@@ -113,11 +113,11 @@ When running a linear regression, an R-Squared value is outputted. This value, g
 variance_response <- var(avg_Total_data$avg_Death_per_1000)
 variance_fitted <- var(fitted(linear_regression_model))
 variance_residuals <- var(residuals(linear_regression_model))
-
 formatted_table <- data.frame(Variance = c(variance_response, variance_fitted, variance_residuals), 
                               Source = c("Response Values", "Fitted Values", "Residuals"))
-
 print(formatted_table)
+
+
 ```
 
 ## 3 Simulation
