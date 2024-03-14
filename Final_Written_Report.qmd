@@ -7,7 +7,8 @@ format:
     code-fold: true 
 editor: visual
 execute:
-  messages: false
+  message: false
+  warning: false
 ---
 
 ## Project Proposal Data
@@ -72,6 +73,7 @@ avg_Total_data <- Total_data|>
 From the animate plots we are able to see the relationship between Time and both GDP and Child Mortality. Throughout the 75 year period we chose, 1950 to 2025, we can see generally that GDP has increased exponentially over time and Child Mortality has decreased significantly. We can see there is an inverse association between the two variables as when GDP goes up, Child Mortality goes down. Through the animation we can see dots moving in a diagonal direction indicating the possibility of a linear relationship between the two variables.
 
 ```{r}
+#| message: false
 bubble <- ggplot(Total_data, aes(x = GDP, y = Death_per_1000, size = GDP)) +
   geom_point() +
   theme_bw() +
