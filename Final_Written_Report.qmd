@@ -4,13 +4,14 @@ author: Aaron Boone, Deven Singh, Miguel Serrano, Daniel Magelky
 format: 
   html:
     self-contained: true
+    code-fold: true 
+    messages: false 
 editor: visual
 ---
 
 ## Project Proposal Data
 
 ```{r}
-#| message: false
 library(tidyverse)
 library(here)
 library(gganimate)
@@ -60,7 +61,6 @@ Total_data <- child_mortality_long |>
 The statistical method we're using for this is linear regression. Linear regression is a statistical method that predicts the linear relationship between a quantitative response variable and one or more quantitative explanatory variables. In this report, we are using a simple linear regression model which takes in one explanatory variable, that predicts the linear relationship between our explanatory variable, GDP, and the response variable, Child Mortality rates.
 
 ```{r}
-#| code-fold: true
 avg_Total_data <- Total_data|>
   group_by(Country)|>
   summarize(avg_GDP = mean(GDP), avg_Death_per_1000 = mean(Death_per_1000))
