@@ -27,6 +27,8 @@ For our first data set we chose one that focuses on the GDP ( Gross Domestic Pro
 
 Our second data is centered around Child Mortality rates in countries across the world. The rate of child mortality is measured as the amount of deaths to children 5 years or younger for every 1,000 children born in a country. This data set includes almost 200 countries from around the world and gives us their child mortality rates from 1950 - 2025.
 
+When combining our two data sets we first decided to choose the time interval of 1950 to 2025, and to use the values for those years from both of our data sets. Then for the GDP data, we changed the structure of the data set so that there was a singular year column and then a row that represented each year for every country. That row contains the country, the year in which the data was recorded, and the GDP for that year. For the Child Mortality data, we similarly changed the structure of the data set so that each row contained a country, year, and child mortality rate in deaths per 1000 children born. We then combined the two data sets by their year columns so that now the final data set had rows with the country, year, GDP, and Child Mortality rate in deaths per 1000 children born.
+
 ```{r}
 gdp_data <- read_csv(here::here("gdp_pcap.csv"))
 child_mortality_data <- read_csv(here::here("child_mortality_0_5_year_olds_dying_per_1000_born.csv"))
@@ -58,7 +60,7 @@ Total_data <- child_mortality_long |>
   rename("Country" = country)
 ```
 
-## 2 Linear Regression
+## Linear Regression
 
 The statistical method we're using for this is linear regression. Linear regression is a statistical method that predicts the linear relationship between a quantitative response variable and one or more quantitative explanatory variables. In this report, we are using a simple linear regression model which takes in one explanatory variable, that predicts the linear relationship between our explanatory variable, GDP, and the response variable, Child Mortality rates.
 
@@ -68,7 +70,7 @@ avg_Total_data <- Total_data|>
   summarize(avg_GDP = mean(GDP), avg_Death_per_1000 = mean(Death_per_1000))
 ```
 
-## 2.1 Data Visualization
+## Data Visualization
 
 From the animate plots we are able to see the relationship between Time and both GDP and Child Mortality. Throughout the 75 year period we chose, 1950 to 2025, we can see generally that GDP has increased exponentially over time and Child Mortality has decreased significantly. We can see there is an inverse association between the two variables as when GDP goes up, Child Mortality goes down. By looking at the animation, you can see that most countries have had decreases in their child mortality rates, but many countries haven't had a proportional increase in GDP. This indicates that the relationship might not be perfectly represented by a linear model. It appears that the relationship between GDP and child mortality might be exponential in nature. When countries have higher child mortality, there is more incentive for addressing that issue than growing economically. Once countries have the issue of child mortality under control, then you can see their GDP grow, as their focus shifts towards a new objective. This relationship can be seen in how many countries in the animation move almost vertically down before shifting to the right. For the most part, independence of the countries is a safe assumption, but there could be some relationships between very high GDP nations and low GDP nations. Countries like the United States often use other countries to produce some materials for goods as a way to capitalize off of less strict labor laws or closer proximity to a valuable resource. When this occurs, there could be some effect of larger nations on the GDP of smaller nations, that isn't explained solely by child mortality.
 
@@ -95,7 +97,7 @@ ggplot(avg_Total_data, aes(x = avg_GDP, y = avg_Death_per_1000)) +
   labs(x = "Average GDP", y = NULL, subtitle = "Average Child Mortality per 1000 Births", title = "Relationship between Average Child Mortality and Average GDP over time")
 ```
 
-## 2.2 Linear Regression
+## Linear Regression Results
 
 $$\hat{y} = 123 - .0024x, \text{where}$$ $$\hat{y} = \text{Predicted Average Child Mortality Rate} \text{ and } x = \text{Average GDP}$$
 
@@ -107,7 +109,7 @@ broom::tidy(linear_regression_model)
             
 ```
 
-## 2.3 Model Fit
+## Model Fit
 
 When running a linear regression, an R-Squared value is outputted. This value, given in a proportion or percentage, represents the amount of variability in the response variable which is accounted for in the linear regression model. From the linear regression model above, our R-Squared value is .3353 so we can estimate that about 33.53% of the variability in the response values are explained by the regression model. This suggests that we have a weak to moderate model for explaining the variability in the data. We can see that the fitted values, which represent the variability of Average Child Mortality rates accounted for by the Average GDP, makes up only 1441.605 of 4299.856 of the response values, which is about .3353, the same as the R-Square value. The residuals, 2858.251 out of the 4299.856 response values, is the rest of the unexplained variability in the data set that isn't represented in the model.
 
@@ -120,9 +122,9 @@ formatted_table <- data.frame(Variance = c(variance_response, variance_fitted, v
 print(formatted_table)
 ```
 
-## 3 Simulation
+## Simulation
 
-## 3.1 Visualizing Simulations from the Model
+## Visualizing Simulations from the Model
 
 From the model we can see a comparison between simulated and observed. As from the model we can see that a majority of the points overlap with one another further highlighting the fact that the simulation is slighly similar to the observed data. However as we get closer to the tails we can see that the simulation is less accurate. The model isn't perfect as we can see many points where the accuracy isn't exact. We are visually able to see the differences between points that appear to be paired in regards to their placement on average GDP. The simulated appears to have a different shape than the observed as it appears to be more of a blob than a curve. The observed appears to look like a negative exponential. Thus the simulation that follows less of this shape isn't an exact model.
 
@@ -138,7 +140,7 @@ ggplot() +
   labs(x= "Average GDP", y = NULL, subtitle ="Average Child Mortality per 1000", title = "Comparison of Observed and Simulated Data")
 ```
 
-## 3.2 Generating Multiple Predictive Checks
+## Generating Multiple Predictive Checks
 
 After running 1000 simulations and calculating the R-Squared value for the regression between the observed data-set and the simulated data-set, we made a histogram that plots the frequency of these R-Squared values. The R-Squared value, in this context, represents the variability in the simulated average death per 100 persons variable that is accounted for by the linear model of the observed data set. The histogram appears to have a normal distribution, with a mean around 0.33 or 0.34 and ranging from 0.2 to about 0.48. Since the mean of the graph is very similar to the reported R-Squared from section 2.3, we could say that the simulation generates data appropriately and accurately.
 
