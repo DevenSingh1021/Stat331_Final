@@ -17,6 +17,7 @@ execute:
 library(tidyverse)
 library(here)
 library(gganimate)
+library(broom)
 ```
 
 ## Data Set Descriptions
@@ -122,6 +123,32 @@ formatted_table <- data.frame(Variance = c(variance_response, variance_fitted, v
 print(formatted_table)
 ```
 
+The data for average GDP and the average death per 1000 people appears to be a curve, so almost no linearity. After log-transforming the data, the graph appears to be more linear, in the negative direction. The line seems to have moderate strength. It does also look like there is equal variance in the data after log-transforming. The histogram plot of the residuals appears to be right-skewed, with the peak of the plot being around -50, and the median being around -30 or -35. Putting all this together, it is appropriate to log-transform the data.
+
+```{r}
+#Log-Transformed Plot
+ggplot(data = avg_Total_data,
+        aes(x = log(avg_GDP),
+        y = avg_Death_per_1000)) +
+  geom_point() +
+  geom_smooth(method = lm)
+
+#Fitted vs Resid
+linear_regression_model |>
+  augment() |>
+  ggplot(aes(x = .fitted,
+        y = .resid)) +
+  geom_point() +
+  geom_smooth(method = lm)
+
+#Resid Normal Plot
+linear_regression_model |>
+  augment() |>
+  ggplot(aes(x = .resid)) +
+  geom_histogram()
+```
+
+
 ## Simulation
 
 ## Visualizing Simulations from the Model
@@ -157,7 +184,7 @@ simulate_r_squared <- function() {
   simulated_formatted_table[,2], data = formatted_table)
   return(summary(simulated_linear_regression_model)$r.squared)
 }
-r_squared_values <- map_dbl(1:num_simulations, ~ simulate_and_calculate_r_squared())
+r_squared_values <- map_dbl(1:num_simulations, ~ simulate_r_squared())
 
 ggplot(mapping = aes(x = r_squared_values)
        ) +
