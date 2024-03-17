@@ -126,7 +126,7 @@ print(formatted_table)
 
 ## Visualizing Simulations from the Model
 
-From the model we can see a comparison between simulated and observed. As from the model we can see that a majority of the points overlap with one another further highlighting the fact that the simulation is slighly similar to the observed data. However as we get closer to the tails we can see that the simulation is less accurate. The model isn't perfect as we can see many points where the accuracy isn't exact. We are visually able to see the differences between points that appear to be paired in regards to their placement on average GDP. The simulated appears to have a different shape than the observed as it appears to be more of a blob than a curve. The observed appears to look like a negative exponential. Thus the simulation that follows less of this shape isn't an exact model.
+From the model we can see a comparison between simulated and observed values. As from the model we can see that a majority of the points overlap with one another further highlighting the fact that the simulation is slighly similar to the observed data. However as we get closer to the tails we can see that the simulation is less accurate. The model isn't perfect as we can see many points where the accuracy isn't exact. We are visually able to see the differences between points that appear to be paired in regards to their placement on average GDP. The simulated appears to have a different shape than the observed as it appears to be more of a blob than a curve. The observed appears to look like a negative exponential. Thus the simulation that follows less of this shape isn't an exact model.
 
 ```{r}
 predictions <- predict(linear_regression_model, avg_Total_data)
@@ -142,19 +142,22 @@ ggplot() +
 
 ## Generating Multiple Predictive Checks
 
-After running 1000 simulations and calculating the R-Squared value for the regression between the observed data-set and the simulated data-set, we made a histogram that plots the frequency of these R-Squared values. The R-Squared value, in this context, represents the variability in the simulated average death per 100 persons variable that is accounted for by the linear model of the observed data set. The histogram appears to have a normal distribution, with a mean around 0.33 or 0.34 and ranging from 0.2 to about 0.48. Since the mean of the graph is very similar to the reported R-Squared from section 2.3, we could say that the simulation generates data appropriately and accurately.
+After running 1000 simulations and calculating the R-Squared value for the regression between the observed data-set and the simulated data-set, we made a histogram that plots the frequency of these R-Squared values. The R-Squared value, in this context, represents the variability in the simulated average death per 1000 children born variable that is accounted for by the linear model of the observed data set. The histogram appears to have a normal distribution, with a mean around 0.33 or 0.34 and ranging from 0.2 to about 0.48. Since the mean of the graph is very similar to the reported R-Squared from our model fit section, we could say that the simulation generates data appropriately and accurately.
 
 ```{r}
 set.seed(9531)
 num_simulations <- 1000
-r_squared_values <- numeric(num_simulations)
 
-for (i in 1:num_simulations) {
-  simulated_values <- predictions + rnorm(length(predictions), 0, sigma(linear_regression_model))
-  simulated_formatted_table <- data.frame(avg_GDP = avg_Total_data$avg_GDP, avg_Death_per_1000 = simulated_values)
-  simulated_linear_regression_model <- lm(simulated_formatted_table[,1] ~ simulated_formatted_table[,2], data = formatted_table)
-  r_squared_values[i] <- summary(simulated_linear_regression_model)$r.squared
+simulate_r_squared <- function() {
+  simulated_values <- predictions + rnorm(length(predictions), 0,        
+  sigma (linear_regression_model))
+  simulated_formatted_table <- data.frame(avg_GDP = avg_Total_data$avg_GDP,
+  avg_Death_per_1000 = simulated_values)
+  simulated_linear_regression_model <- lm(simulated_formatted_table[,1] ~
+  simulated_formatted_table[,2], data = formatted_table)
+  return(summary(simulated_linear_regression_model)$r.squared)
 }
+r_squared_values <- map_dbl(1:num_simulations, ~ simulate_and_calculate_r_squared())
 
 ggplot(mapping = aes(x = r_squared_values)
        ) +
