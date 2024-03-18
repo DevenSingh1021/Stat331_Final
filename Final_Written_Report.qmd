@@ -137,7 +137,7 @@ kable(formatted_table,
                 position = "center")
 ```
 
-The data for average GDP and the average death per 1000 people appears to be a curve, with very little linearity. After log-transforming the data, the graph appears to show a negative linearpattern. The line seems to have moderate strength. It does also look like there is equal variance in the data after log-transforming. The histogram plot of the residuals appears to be right-skewed, with the peak of the plot being around -50, and the median being around -30 or -35. Putting all this together, it is appropriate to log-transform the data.
+The data for average GDP and the average death per 1000 people appears to be a curve, with very little linearity. After log-transforming the data, the graph appears to show a negative linear pattern. The line seems to have moderate strength. It does also look like there is equal variance in the data after log-transforming. The histogram plot of the residuals appears to be right-skewed, with the peak of the plot being around -50, and the median being around -30 or -35. Putting all this together, it is appropriate to log-transform the data.
 
 ```{r}
 #Log-Transformed Plot
