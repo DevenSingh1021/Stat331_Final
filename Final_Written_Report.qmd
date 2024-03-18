@@ -18,6 +18,8 @@ library(tidyverse)
 library(here)
 library(gganimate)
 library(broom)
+library(knitr)
+library(kableExtra)
 ```
 
 ## Data Set Descriptions
@@ -118,12 +120,18 @@ When running a linear regression, an R-Squared value is outputted. This value, g
 variance_response <- var(avg_Total_data$avg_Death_per_1000)
 variance_fitted <- var(fitted(linear_regression_model))
 variance_residuals <- var(residuals(linear_regression_model))
-formatted_table <- data.frame(Variance = c(variance_response, variance_fitted, variance_residuals), 
-                              Source = c("Response Values", "Fitted Values", "Residuals"))
-print(formatted_table)
+formatted_table <- data.frame(Variance = c(variance_response, variance_fitted,  
+                variance_residuals), 
+                Source = c("Response Values", "Fitted Values", "Residuals"))
+kable(formatted_table, 
+      col.names = c("Variance", "Source"),
+      caption = "Variance of Responsess") %>%
+  kable_styling(full_width = FALSE, 
+                bootstrap_options = "striped", 
+                position = "center")
 ```
 
-The data for average GDP and the average death per 1000 people appears to be a curve, so almost no linearity. After log-transforming the data, the graph appears to be more linear, in the negative direction. The line seems to have moderate strength. It does also look like there is equal variance in the data after log-transforming. The histogram plot of the residuals appears to be right-skewed, with the peak of the plot being around -50, and the median being around -30 or -35. Putting all this together, it is appropriate to log-transform the data.
+The data for average GDP and the average death per 1000 people appears to be a curve, with very little linearity. After log-transforming the data, the graph appears to show a negative linearpattern. The line seems to have moderate strength. It does also look like there is equal variance in the data after log-transforming. The histogram plot of the residuals appears to be right-skewed, with the peak of the plot being around -50, and the median being around -30 or -35. Putting all this together, it is appropriate to log-transform the data.
 
 ```{r}
 #Log-Transformed Plot
@@ -131,7 +139,10 @@ ggplot(data = avg_Total_data,
         aes(x = log(avg_GDP),
         y = avg_Death_per_1000)) +
   geom_point() +
-  geom_smooth(method = lm)
+  geom_smooth(method = lm) +
+  labs(x = "Log Average GDP",  
+       y = "Average Death per 1000",  
+       title = "Log Average GDP and Average Death Rate")
 
 #Fitted vs Resid
 linear_regression_model |>
@@ -139,15 +150,20 @@ linear_regression_model |>
   ggplot(aes(x = .fitted,
         y = .resid)) +
   geom_point() +
-  geom_smooth(method = lm)
+  geom_smooth(method = lm) +
+  labs(x = "Fitted Values",     
+       y = "Residuals",           
+       title = "Scatterplot of Residuals vs Fitted Values")
 
 #Resid Normal Plot
 linear_regression_model |>
   augment() |>
   ggplot(aes(x = .resid)) +
-  geom_histogram()
+  geom_histogram() +
+  labs(x = "Residuals",          
+       y = "Frequency",            
+       title = "Histogram of Residuals")
 ```
-
 
 ## Simulation
 
